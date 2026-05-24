@@ -1,0 +1,9 @@
+{
+  "name": "ats-ai-resume-builder",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm install --prefix ats-ai-frontend && npm run build --prefix ats-ai-frontend",
+    "vercel-build": "npm run build"
+  }
+}

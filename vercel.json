@@ -1,18 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "ats-ai-frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
-      "src": "backend/src/server.js",
-      "use": "@vercel/node"
-    }
-  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -20,7 +6,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/ats-ai-frontend/dist/$1"
+      "destination": "/index.html"
     }
   ]
 }
