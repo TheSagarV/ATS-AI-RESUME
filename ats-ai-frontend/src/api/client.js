@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// In Vercel production, use the relative /api path (handled by vercel.json rewrites)
+// In local development, default to http://localhost:5000/api
+const baseURL = import.meta.env.PROD ? "/api" : "http://localhost:5000/api";
+
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL,
   withCredentials: false,
 });
 

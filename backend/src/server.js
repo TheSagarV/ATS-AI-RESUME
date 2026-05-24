@@ -33,7 +33,7 @@ const app = express();
 // =======================================
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: process.env.NODE_ENV === "production" ? true : ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"]
   })
@@ -55,7 +55,12 @@ app.get("/", (_req, res) => res.json({ status: "OK" }));
 // =======================================
 // START SERVER
 // =======================================
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Backend running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`✅ Backend running on http://localhost:${PORT}`);
+  });
+}
+
+// Export for Vercel Serverless
+export default app;

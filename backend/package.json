@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@sparticuz/chromium": "^148.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -19,7 +20,8 @@
     "pdf-parse": "^1.1.1",
     "pdfkit": "^0.13.0",
     "pg": "^8.11.0",
-    "puppeteer": "^24.31.0"
+    "puppeteer": "^24.31.0",
+    "puppeteer-core": "^25.0.4"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
