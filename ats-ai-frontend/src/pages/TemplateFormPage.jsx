@@ -46,11 +46,26 @@ const TemplateFormPage = () => {
   const navigate = useNavigate();
   const { token, user } = useAuth();
 
+  // Helper to get user-scoped localStorage key
+  const getStorageKey = () => {
+    return user?.id ? `resume_form_data_${user.id}` : null;
+  };
+
   const [form, setForm] = useState(() => {
+    const key = user?.id ? `resume_form_data_${user.id}` : null;
+    if (!key) return initialForm;
+
     try {
-      const saved = localStorage.getItem("resume_form_data");
+      // Migrate old shared key to user-scoped key if exists
+      const oldShared = localStorage.getItem("resume_form_data");
+      const saved = localStorage.getItem(key) || oldShared;
       if (saved) {
         const parsed = JSON.parse(saved);
+        // If we migrated from old shared key, save to user-scoped key and remove old
+        if (!localStorage.getItem(key) && oldShared) {
+          localStorage.setItem(key, oldShared);
+          localStorage.removeItem("resume_form_data");
+        }
         return {
           ...initialForm,
           ...parsed,
@@ -76,10 +91,40 @@ const TemplateFormPage = () => {
     }
   }, [templateId]);
 
-  // Save to localStorage
+  // Save to user-scoped localStorage
   useEffect(() => {
-    localStorage.setItem("resume_form_data", JSON.stringify(form));
-  }, [form]);
+    const key = getStorageKey();
+    if (key) {
+      localStorage.setItem(key, JSON.stringify(form));
+    }
+  }, [form, user?.id]);
+
+  // Reset form when user changes (login/logout/switch account)
+  useEffect(() => {
+    const key = getStorageKey();
+    if (!key) {
+      setForm(initialForm);
+      return;
+    }
+    try {
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setForm({
+          ...initialForm,
+          ...parsed,
+          design: {
+            ...initialForm.design,
+            ...(parsed.design || {})
+          }
+        });
+      } else {
+        setForm(initialForm);
+      }
+    } catch (e) {
+      setForm(initialForm);
+    }
+  }, [user?.id]);
 
   const selected = getTemplateById(templateId || form.design?.template || "classic");
   const TemplateComponent = selected?.Component;
@@ -418,8 +463,8 @@ const TemplateFormPage = () => {
                 <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700/50 space-y-6">
                   <div>
                     <label className="text-xs text-slate-400 block mb-2">Font Family</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {['sans', 'serif', 'mono'].map(f => (
+                    <div className="grid grid-cols-4 gap-2">
+                      {['sans', 'serif', 'mono', 'poppins'].map(f => (
                         <button
                           key={f}
                           onClick={() => setForm(prev => ({ ...prev, design: { ...prev.design, font: f } }))}

@@ -4,7 +4,7 @@ const ResumeTemplateClassic = ({ data }) => {
   const { fullName, title, email, phone, location, github, linkedin, summary, skills, experience, education, design } = data;
 
   const fontStyle = {
-    fontFamily: design?.font === 'serif' ? 'Georgia, serif' : design?.font === 'mono' ? 'Courier New, monospace' : 'ui-sans-serif, system-ui, sans-serif',
+    fontFamily: design?.font === 'poppins' ? "'Poppins', sans-serif" : design?.font === 'serif' ? 'Georgia, serif' : design?.font === 'mono' ? 'Courier New, monospace' : 'ui-sans-serif, system-ui, sans-serif',
     fontSize: design?.size === 'small' ? '0.7rem' : design?.size === 'large' ? '0.9rem' : '0.8rem',
   };
 

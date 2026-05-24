@@ -57,6 +57,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // Clear user-specific resume data before wiping user reference
+    if (user?.id) {
+      localStorage.removeItem(`resume_form_data_${user.id}`);
+    }
+    // Also clean up the old shared key (legacy)
+    localStorage.removeItem("resume_form_data");
     setToken(null);
     setUser(null);
     localStorage.removeItem("ats_auth");
