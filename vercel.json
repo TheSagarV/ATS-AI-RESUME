@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "ats-ai-frontend/dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
